@@ -4,6 +4,13 @@ An automated system that generates witty pro-crypto tweets based on news article
 market activity (via GeckoTerminal), and crypto Twitter discussions. 
 Uses Claude for news summarization and contextual tweet generation.
 
+An automated system that generates witty pro-crypto tweets based on news articles (via CoinTelegraph), 
+market activity (via GeckoTerminal), and crypto Twitter discussions.
+Uses Claude for news summarization and contextual tweet generation. 
+Now supports **posting on Twitter and Farcaster**. 
+Includes a dedicated branch for Farcaster-only posting.
+
+
 NOTE: Please remember to delete `article_summaries.json` and `generated_tweets.json` files each time you do a fresh run.
 
 ## Prerequisites
@@ -14,30 +21,46 @@ NOTE: Please remember to delete `article_summaries.json` and `generated_tweets.j
 
 ## Installation
 
-1. Clone the repository
-2. Install requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Create a `.env` file with your credentials:
-   ```env
-   ANTHROPIC_API_KEY=your_anthropic_key
-   BEARER_TOKEN=your_twitter_bearer_token
-   API_KEY=your_twitter_api_key
-   API_KEY_SECRET=your_twitter_api_secret
-   ACCESS_TOKEN=your_twitter_access_token
-   ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
-   EVM_SEED_PHRASE=
-   ```
-4. Configure `tweets_config.json` with example tweets
-5. Run the service in tmux:
-   ```bash
-   tmux new -s cryptobot
-   python main.py
-   # Detach with Ctrl+B, then D
-   ```
-7. Run `curl -X POST http://localhost:8000/trigger-tweet` to initiate the tweet generation process. 
-You can even run a cron job to run this command each hour or so.
+
+#### **For Twitter Integration**
+```env
+BEARER_TOKEN=your_twitter_bearer_token
+API_KEY=your_twitter_api_key
+API_KEY_SECRET=your_twitter_api_secret
+ACCESS_TOKEN=your_twitter_access_token
+ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+```
+
+#### **For Farcaster Integration**
+- You must use an **Ethereum wallet private key** for an account that already exists on Farcaster.
+- Add the private key in the `.env` file as `EVM_SEED_PHRASE` (mnemonic seed phrase or private key).
+
+```env
+EVM_SEED_PHRASE=your_ethereum_wallet_mnemonic_or_private_key
+```
+
+## **Branches**
+The project now has two main branches:
+
+1. **`master`**: Posts on both Twitter and Farcaster.
+2. **`farcaster-post-integration`**: Dedicated branch for Farcaster-only posting. Removes Twitter-specific dependencies.
+
+---
+
+## **New Farcaster-Specific Features**
+
+### Farcaster Integration
+The bot uses the **Warpcast SDK** for Farcaster integration. It requires:
+
+- An Ethereum wallet private key for an account registered on Farcaster.
+- Posts are created using the Warpcast `post_cast` method.
+
+### Key Updates
+
+#### **Environment Variable**:
+- Add the `EVM_SEED_PHRASE` in your `.env` file for wallet authentication.
+```env
+EVM_SEED_PHRASE=your_ethereum_wallet_mnemonic_or_private_key
 
 ## System Flow
 
