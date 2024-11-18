@@ -4,6 +4,8 @@ An automated system that generates witty pro-crypto tweets based on news article
 market activity (via GeckoTerminal), and crypto Twitter discussions. 
 Uses Claude for news summarization and contextual tweet generation.
 
+NOTE: Please remember to delete `article_summaries.json` and `generated_tweets.json` files each time you do a fresh run.
+
 ## Prerequisites
 
 - Python 3.10+
@@ -25,6 +27,7 @@ Uses Claude for news summarization and contextual tweet generation.
    API_KEY_SECRET=your_twitter_api_secret
    ACCESS_TOKEN=your_twitter_access_token
    ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+   EVM_SEED_PHRASE=
    ```
 4. Configure `tweets_config.json` with example tweets
 5. Run the service in tmux:

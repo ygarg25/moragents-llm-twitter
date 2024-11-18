@@ -7,4 +7,6 @@ requests>=2.31.0
 pytz>=2023.3
 python-dateutil>=2.8.2
 apscheduler>=3.10.1
-tweepy
+tweepy~=4.14.0
+urllib3~=2.2.3
+farcaster~=0.7.11

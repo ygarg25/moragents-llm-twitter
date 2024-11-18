@@ -1,3 +1,4 @@
+import asyncio
 import html
 import json
 import re
@@ -108,7 +109,7 @@ def fetch_crypto_news() -> list:
 
 
 async def generate_summary(article: dict, api_key: str) -> Optional[str]:
-    """Generate summary using Claude"""
+    """Generate summary using Claude with 30 second timeout"""
     client = Anthropic(api_key=api_key)
 
     prompt = f"""Summarize this crypto news article in a clear, informative way that captures key points and market 
@@ -121,19 +122,22 @@ async def generate_summary(article: dict, api_key: str) -> Optional[str]:
     Provide the summary in a single paragraph without any prefixes or labels."""
 
     try:
-        message = await client.messages.create(
-            model=CLAUDE_MODEL,
-            max_tokens=CLAUDE_MAX_TOKENS,
-            messages=[{
-                "role": "user",
-                "content": prompt
-            }]
-        )
+        async with asyncio.timeout(30):  # 30 second timeout
+            message = await client.messages.create(
+                model=CLAUDE_MODEL,
+                max_tokens=CLAUDE_MAX_TOKENS,
+                messages=[{
+                    "role": "user",
+                    "content": prompt
+                }]
+            )
+            return message.content[0].text.strip()
 
-        return message.content[0].text.strip()
-
+    except asyncio.TimeoutError:
+        logger.warning(f"Timeout while generating summary for article: {article['title']} - skipping")
+        return None
     except Exception as e:
-        logger.error(f"Error generating summary: {e}")
+        logger.error(f"Error generating summary for {article['title']}: {str(e)}")
         logger.exception("Full traceback:")
         return None
 
@@ -430,7 +434,6 @@ async def fetch_and_generate_summaries() -> bool:
             logger.info(f"Title: {article['title']}")
             logger.info(f"URL: {article['link']}")
 
-            # Await the summary generation
             summary = await generate_summary(article, ANTHROPIC_API_KEY)
 
             if summary:
@@ -445,13 +448,17 @@ async def fetch_and_generate_summaries() -> bool:
                 summaries_archive['processed_urls'].append(article['link'])
                 successful_summaries += 1
             else:
-                logger.error(f"Failed to generate summary for article: {article['title']}")
+                # Mark the URL as processed even if summary generation failed
+                # This prevents retrying failed articles endlessly
+                logger.info(f"Marking article as processed despite failure: {article['title']}")
+                summaries_archive['processed_urls'].append(article['link'])
 
-        logger.info(f"\nSaving updated archive:")
-        logger.info(f"New successful summaries: {successful_summaries}")
+            # Save after each article in case of interruption
+            save_archive(summaries_archive, SUMMARIES_FILE)
+
+        logger.info(f"\nSummary generation completed:")
+        logger.info(f"Successful summaries: {successful_summaries}")
         logger.info(f"Total items in archive: {len(summaries_archive['items'])}")
-
-        save_archive(summaries_archive, SUMMARIES_FILE)
         return True
     else:
         logger.info("No new articles to process")

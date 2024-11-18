@@ -5,11 +5,15 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI, BackgroundTasks
 from agents.agent import generate_tweet, fetch_and_generate_summaries, load_archive, save_archive
-from core.config import SUMMARIES_FILE, TWEETS_ARCHIVE, ANTHROPIC_API_KEY
+from core.config import SUMMARIES_FILE, TWEETS_ARCHIVE, ANTHROPIC_API_KEY, EVM_SEED_PHRASE
 from core.config import logger
 from helpers.gecko_terminal import gecko_terminal_api
 from helpers.twitter_helpers import twitter_api
 from helpers.content_tracker import ContentTracker
+from farcaster import Warpcast
+
+client = Warpcast(mnemonic=EVM_SEED_PHRASE)
+
 
 # Initialize scheduler
 scheduler = AsyncIOScheduler()
@@ -122,7 +126,14 @@ async def generate_and_post_tweet():
 
         # Try to post to Twitter
         logger.info("\n=== Attempting to Post Tweet ===")
-        success = await twitter_api.post_tweet(tweet_text)
+
+        # success = await twitter_api.post_tweet(tweet_text)
+
+        response = client.post_cast(text=tweet_text)
+        logger.info(f"Post Transaction Hash: {response.cast.hash}")
+        logger.info(f"Post Transaction Receipt:", response.cast.hash)
+
+        success = True
 
         # Update posted status if successful
         if success:
