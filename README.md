@@ -57,7 +57,7 @@ The bot uses the **Warpcast SDK** for Farcaster integration. It requires:
 - Add the `EVM_SEED_PHRASE` in your `.env` file for wallet authentication.
 ```env
 EVM_SEED_PHRASE=your_ethereum_wallet_mnemonic_or_private_key
-
+```
 ## System Flow
 
 The system automatically:
