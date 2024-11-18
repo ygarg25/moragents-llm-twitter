@@ -1,10 +1,6 @@
 # Crypto News Tweet Generator Bot
 
 An automated system that generates witty pro-crypto tweets based on news articles (via CoinTelegraph), 
-market activity (via GeckoTerminal), and crypto Twitter discussions. 
-Uses Claude for news summarization and contextual tweet generation.
-
-An automated system that generates witty pro-crypto tweets based on news articles (via CoinTelegraph), 
 market activity (via GeckoTerminal), and crypto Twitter discussions.
 Uses Claude for news summarization and contextual tweet generation. 
 Now supports **posting on Twitter and Farcaster**. 
