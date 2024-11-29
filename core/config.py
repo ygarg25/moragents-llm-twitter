@@ -25,14 +25,23 @@ TARGET_USERNAMES = [
 RSS_FEED = "https://cointelegraph.com/rss"
 GECKO_TERMINAL_API = "https://api.geckoterminal.com/api/v2"
 
+# Farcaster Config
+with open('/app/id.sec', 'rb') as file:
+    FARCASTER_SIGNER_KEY = file.read().strip()[0:32]
+
+FID = 880577
 # API Keys
+
+
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 BEARER_TOKEN = os.getenv('BEARER_TOKEN')
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_KEY_SECRET')
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 ACCESS_TOKEN_SECRET = os.getenv('ACCESS_TOKEN_SECRET')
-EVM_SEED_PHRASE = os.getenv('EVM_SEED_PHRASE')
+# EVM_SEED_PHRASE = os.getenv('EVM_SEED_PHRASE')
+
+# Farcaster Sign
 
 # Storage Files
 SUMMARIES_FILE = 'article_summaries.json'

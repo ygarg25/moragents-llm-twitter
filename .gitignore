@@ -1,1 +1,8 @@
 env3.10/
+venv/
+result
+__pycache__/
+
+article_summaries.json
+generated_tweets.json
+.env
