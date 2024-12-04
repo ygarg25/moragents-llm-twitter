@@ -1,8 +1,4 @@
 import logging
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -31,17 +27,7 @@ with open('/app/id.sec', 'rb') as file:
 
 FID = 880577
 # API Keys
-
-
-ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
-BEARER_TOKEN = os.getenv('BEARER_TOKEN')
-API_KEY = os.getenv('API_KEY')
-API_SECRET = os.getenv('API_KEY_SECRET')
-ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
-ACCESS_TOKEN_SECRET = os.getenv('ACCESS_TOKEN_SECRET')
-# EVM_SEED_PHRASE = os.getenv('EVM_SEED_PHRASE')
-
-# Farcaster Sign
+ANTHROPIC_API_KEY = "" # TODO: Add your Anthropic API key here
 
 # Storage Files
 SUMMARIES_FILE = 'article_summaries.json'

@@ -90,7 +90,6 @@
         setup = ./. + "/setup.sh";
         supervisorConf = ./. + "/supervisord.conf";
 
-        env = ./. + "/.env";
         tweetsConf = ./. + "/tweets_config.json";
     in {
         app = pkgs.runCommand "app" {} ''
@@ -108,7 +107,6 @@
             cp ${setup} $out/app/setup.sh
             chmod +x $out/app/*
             cp ${supervisorConf} $out/etc/supervisord.conf
-            cp ${env} $out/app/.env
             cp ${tweetsConf} $out/app/tweets_config.json
         '';
 

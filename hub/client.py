@@ -7,7 +7,7 @@ from nacl.signing import SigningKey
 import requests
 from core.config import logger
 
-HUB_URL = "https://hub.pinata.cloud/v1/submitMessage"
+HUB_URL = "https://hub.farcaster.standardcrypto.vc:2281/v1/submitMessage"
 # HUB_URL = "https://hub.pinata.cloud/v1/validateMessage"
 FARCASTER_EPOCH = 1609459200
 
